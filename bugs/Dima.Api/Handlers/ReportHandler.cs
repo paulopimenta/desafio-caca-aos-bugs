@@ -81,7 +81,7 @@ public class ReportHandler(AppDbContext context) : IReportHandler
     public async Task<Response<FinancialSummary?>> GetFinancialSummaryReportAsync(GetFinancialSummaryRequest request)
     {
         await Task.Delay(3280);
-        var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        var startDate = new DateTime(DateTime.Now.Year, 1, 1);
         try
         {
             var data = await context

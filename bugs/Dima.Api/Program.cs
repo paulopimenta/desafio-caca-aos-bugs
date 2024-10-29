@@ -5,9 +5,9 @@ using Dima.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
+builder.AddCrossOrigin();
 builder.AddSecurity();
 builder.AddDataContexts();
-builder.AddCrossOrigin();
 builder.AddDocumentation();
 builder.AddServices();
 
