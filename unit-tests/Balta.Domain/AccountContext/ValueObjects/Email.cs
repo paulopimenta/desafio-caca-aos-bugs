@@ -29,15 +29,28 @@ public partial record Email : ValueObject
 
     public static Email ShouldCreate(string address, IDateTimeProvider dateTimeProvider)
     {
-        address = address.Trim();
-        address = address.ToLower();
+        try
+        {
+            if (address == null)
+                return null;
 
-        if (!EmailRegex().IsMatch(address))
-            throw new InvalidEmailException();
+            if (address == String.Empty)
+                return new Email(String.Empty, address.ToBase64(), VerificationCode.ShouldCreate(dateTimeProvider));
 
-        var verificationCode = VerificationCode.ShouldCreate(dateTimeProvider);
+            address = address.Trim();
+            address = address.ToLower();
 
-        return new Email(address, address.ToBase64(), verificationCode);
+            if (!EmailRegex().IsMatch(address))
+                throw new InvalidEmailException();
+
+            var verificationCode = VerificationCode.ShouldCreate(dateTimeProvider);
+
+            return new Email(address, address.ToBase64(), verificationCode);
+        }
+        catch (InvalidEmailException ex)
+        {
+            return null;
+        }
     }
 
     #endregion

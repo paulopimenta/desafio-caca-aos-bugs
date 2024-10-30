@@ -43,7 +43,6 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
 
     public async Task<Response<Transaction?>> UpdateAsync(UpdateTransactionRequest request)
     {
-        //throw new NotImplementedException();
         try
         {
             var transaction = await context
