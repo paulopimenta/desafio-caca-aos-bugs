@@ -30,21 +30,28 @@ public record Password : ValueObject
 
     public static Password ShouldCreate(string plainText)
     {
-        if (string.IsNullOrEmpty(plainText))
-            throw new InvalidPasswordException("Password cannot be null or empty");
+        try
+        {
+            if (string.IsNullOrEmpty(plainText))
+                throw new InvalidPasswordException("Password cannot be null or empty");
 
-        if (string.IsNullOrWhiteSpace(plainText))
-            throw new InvalidPasswordException("Password cannot be null or empty");
+            if (string.IsNullOrWhiteSpace(plainText))
+                throw new InvalidPasswordException("Password cannot be null or empty");
 
-        if (plainText.Length < MinLength)
-            throw new InvalidPasswordException($"Password should have at least {MinLength} characters");
+            if (plainText.Length < MinLength)
+                throw new InvalidPasswordException($"Password should have at least {MinLength} characters");
 
-        if (plainText.Length > MaxLength)
-            throw new InvalidPasswordException($"Password should have less than {MaxLength} characters");
+            if (plainText.Length > MaxLength)
+                throw new InvalidPasswordException($"Password should have less than {MaxLength} characters");
 
-        var hash = ShouldHashPassword(plainText);
-        
-        return new Password(hash);
+            var hash = ShouldHashPassword(plainText);
+
+            return new Password(hash);
+        }
+        catch (InvalidPasswordException ex)
+        {
+            return null;
+        }
     }
 
     #endregion
